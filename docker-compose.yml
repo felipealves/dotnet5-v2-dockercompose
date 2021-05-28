@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+
+    webtestapi:
+        build:
+            context: ./WebTest
+            dockerfile: Dockerfile
+        image: webtestapi:v2
+        container_name: webtestapiv2
+        networks: 
+            - webtestnet
+        expose:
+            - "5000"
+
+    nginxapi:
+        build:
+            context: ./nginx
+            dockerfile: Dockerfile
+        image: nginx:v2
+        container_name: nginxv2
+        networks: 
+            - webtestnet
+        ports:
+             - "3000:80"
+        links:
+            - webtestapi
+
+networks: 
+    webtestnet:
+        driver: bridge
